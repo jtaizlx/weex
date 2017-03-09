@@ -367,6 +367,21 @@ public class BounceRecyclerView extends BaseBounceView<WXRecyclerView> implement
   }
 
   /**
+   * remove stickyView immediately
+   * @param component component
+   */
+  public void removeStickyImmediately(WXComponent component) {
+    if (component instanceof WXCell && headComponentStack.remove(component)) {
+      final View realView = component.getRealView();
+      headerViewStack.remove(realView);
+      if (this == realView.getParent()) {
+        removeView(realView);
+        ((WXCell)component).recoverySticky();
+      }
+    }
+  }
+
+  /**
    * Clear All Sticky of stack
    */
   public void clearSticky() {
@@ -374,7 +389,7 @@ public class BounceRecyclerView extends BaseBounceView<WXRecyclerView> implement
     while (size > 0 && headerViewStack.size() == size) {
       WXCell headComponent = headComponentStack.pop();
       View headerView = headerViewStack.pop();
-      ((ViewGroup) getParent()).removeView(headerView);
+      removeView(headerView);
       headComponent.recoverySticky();
     }
   }

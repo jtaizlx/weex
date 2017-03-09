@@ -211,6 +211,7 @@ import com.taobao.weex.annotation.Component;
 import com.taobao.weex.dom.WXDomObject;
 import com.taobao.weex.ui.component.WXBaseRefresh;
 import com.taobao.weex.ui.component.WXComponent;
+import com.taobao.weex.ui.component.WXHeader;
 import com.taobao.weex.ui.component.WXLoading;
 import com.taobao.weex.ui.component.WXRefresh;
 import com.taobao.weex.ui.component.WXVContainer;
@@ -326,14 +327,12 @@ public class WXListComponent extends BasicListComponent<BounceRecyclerView> {
 
   public void remove(WXComponent child, boolean destroy) {
     super.remove(child, destroy);
-    removeFooterOrHeader(child);
-  }
-
-  private void removeFooterOrHeader(WXComponent child) {
     if (child instanceof WXLoading) {
       getHostView().removeFooterView(child);
     } else if (child instanceof WXRefresh) {
       getHostView().removeHeaderView(child);
+    } else if (child instanceof WXHeader) {
+      getHostView().removeStickyImmediately(child);
     }
   }
 }
